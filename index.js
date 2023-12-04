@@ -38,6 +38,8 @@ server.use(
   );
 server.use(passport.initialize());
 server.use(passport.session());
+
+//https://node-db-ff.vercel.app     *ruta inicial*
 server.use('/personajesFF', personajeRoutes);
 server.use('/videojuegosFF', videojuegoRoutes);
 server.use('/villanosFF', villanoRoutes);
