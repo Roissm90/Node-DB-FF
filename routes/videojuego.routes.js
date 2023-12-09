@@ -16,6 +16,18 @@ router.get('/', async (req, res, next) => {
     }
 })
 
+router.get('/:id', async (req, res, next) => {
+    try {
+        const videojuego = await Videojuego.findById(req.params.id).populate('personajes').populate('villanos');
+        if (!videojuego) {
+            return res.status(404).json({ message: 'Videojuego no encontrado' });
+        }
+        return res.status(200).json(videojuego);
+    } catch (err) {
+        next(err);
+    }
+});
+
 router.post('/',[isAuthenticated], [upload.single('picture'), uploadToCloudinary], async (req, res, next) => {
     try {
         const videojuegoPicture = req.file_url ? req.file_url : null; //req.file.path
