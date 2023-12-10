@@ -6,7 +6,8 @@ const villanoSchema = new Schema (
         age: {type: Number, required: true},
         info: {type: String, required: true},
         turbo: {type: String},
-        picture: {type: String}
+        picture: {type: String},
+        juego: {type: String}
     },
     {
         timestamps: true
