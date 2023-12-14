@@ -5,8 +5,15 @@ const router = express.Router();
 const User = require('../models/User');
 
 router.get('/', async (req, res, next) => {
-
-})
+    try {
+        const users = await User.find();
+        return res.status(200).json(users)
+    }
+    catch (err) {
+        //return res.status(500).json(err)
+        next(err)
+    }
+});
 
 router.post('/register', async(req, res, next) => {
     try {
