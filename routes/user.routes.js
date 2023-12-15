@@ -5,13 +5,6 @@ const router = express.Router();
 const User = require('../models/User');
 const cors = require('cors');
 
-const corsOptions = {
-    origin: 'http://localhost:5173', // Especifica el origen permitido
-    credentials: true // Habilita las credenciales (si es necesario)
-};
-  
-router.use(cors(corsOptions)); // Aplica la configuración de CORS
-
 router.get('/', async (req, res, next) => {
     try {
         const users = await User.find();
