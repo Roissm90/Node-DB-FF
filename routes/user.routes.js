@@ -12,6 +12,12 @@ const corsOptions = {
   
 router.use(cors(corsOptions));
 
+router.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Credentials', true);
+    next();
+});
+
 router.get('/', async (req, res, next) => {
     try {
         const users = await User.find();
