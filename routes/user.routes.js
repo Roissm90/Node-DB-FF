@@ -25,19 +25,25 @@ router.get('/', async (req, res, next) => {
 // Ruta para registro de usuarios
 router.post('/register', async (req, res, next) => {
     try {
-        const done = (error, user) => {
-            if (error) {
-                console.log(error.message);
-                return next(error);
+        const { email, password } = req.body;
+
+        // Verifica si el usuario ya existe
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: 'El usuario ya existe.' });
+        }
+
+        // Crea un nuevo usuario
+        const newUser = new User({ email, password });
+        await newUser.save();
+
+        // Autenticación del nuevo usuario
+        req.login(newUser, (err) => {
+            if (err) {
+                return next(err);
             }
-            req.logIn(user, (error) => {
-                if (error) {
-                    next(error);
-                }
-                return res.status(201).json(user);
-            });
-        };
-        passport.authenticate('register', done)(req);
+            return res.status(201).json(newUser);
+        });
     } catch (err) {
         next(err);
     }
@@ -58,7 +64,7 @@ router.post('/login', (req, res, next) => {
             });
         }
     };
-    passport.authenticate('login', done)(req);
+    passport.authenticate('login', done)(req, res, next);
 });
 
 // Ruta para cerrar sesión
