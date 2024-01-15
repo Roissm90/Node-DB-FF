@@ -21,7 +21,7 @@ require('./authentication/passport');
 const cors = require('cors');
 
 const corsOptions = {
-  origin: 'http://localhost:5174', // Especifica el origen permitido
+  origin: 'http://localhost:5173', // Especifica el origen permitido
   credentials: true // Habilita las credenciales (si es necesario)
 };
 
