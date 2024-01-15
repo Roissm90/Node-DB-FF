@@ -52,11 +52,17 @@ server.use('/invocacionesFF', invocacionRoutes);
 server.use('/magiasFF', magiaRoutes);
 server.use('/trabajosFF', trabajoRoutes);
 server.use('/monstruosFF', monstruoRoutes);
-server.use('/usersFF', cors(corsOptions), userRoutes);
+server.use('/usersFF', userRoutes);
 
 server.use((err, req, res, next) => {
     return res.status(err.status || 500).json(err.message || 'Error inesperado');
 })
+
+server.use((req, res, next) => {
+  console.log(`Solicitud recibida: ${req.method} ${req.url}`);
+  next();
+});
+
 
 server.listen(PORT, ()=>{
     console.log(`El servidor esta corriendo http://localhost:${PORT}`);
