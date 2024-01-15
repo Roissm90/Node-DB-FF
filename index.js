@@ -26,6 +26,10 @@ const corsOptions = {
 };
 
 server.use(cors(corsOptions))
+server.use((req, res, next) => {
+  console.log(`Solicitud recibida: ${req.method} ${req.url}`);
+  next();
+});
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 server.use(
