@@ -52,7 +52,7 @@ server.use('/invocacionesFF', invocacionRoutes);
 server.use('/magiasFF', magiaRoutes);
 server.use('/trabajosFF', trabajoRoutes);
 server.use('/monstruosFF', monstruoRoutes);
-server.use('/usersFF', userRoutes);
+server.use('/usersFF', cors(corsOptions), userRoutes);
 
 server.use((err, req, res, next) => {
     return res.status(err.status || 500).json(err.message || 'Error inesperado');
