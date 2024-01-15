@@ -20,12 +20,9 @@ const MongoStore = require('connect-mongo');
 require('./authentication/passport');
 const cors = require('cors');
 
-const corsOptions = {
-  origin: 'http://localhost:5173', // Especifica el origen permitido
-  credentials: true // Habilita las credenciales (si es necesario)
-};
 
-server.use(cors(corsOptions))
+
+server.use(cors())
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 server.use(
