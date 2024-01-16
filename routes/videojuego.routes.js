@@ -28,7 +28,7 @@ router.get('/:id', async (req, res, next) => {
     }
 });
 
-router.post('/',[isAuthenticated], [upload.single('picture'), uploadToCloudinary], async (req, res, next) => {
+router.post('/', [upload.single('picture'), uploadToCloudinary], async (req, res, next) => {
     try {
         const videojuegoPicture = req.file_url ? req.file_url : null; //req.file.path
         console.log(req.body)
@@ -52,7 +52,7 @@ router.post('/',[isAuthenticated], [upload.single('picture'), uploadToCloudinary
     }
 })
 
-router.put('/agregar-personajes-array', [isAuthenticated], async (req, res, next) => {
+router.put('/agregar-personajes-array', async (req, res, next) => {
     try {
         const videojuegoId = req.body.videojuegoId; 
         const personajesIdArray = req.body.personajesIdArray;
@@ -69,7 +69,7 @@ router.put('/agregar-personajes-array', [isAuthenticated], async (req, res, next
     }
 });
 
-router.put('/agregar-villanos-array', [isAuthenticated], async (req, res, next) => {
+router.put('/agregar-villanos-array', async (req, res, next) => {
     try {
         const videojuegoId = req.body.videojuegoId; 
         const villanosIdArray = req.body.villanosIdArray;

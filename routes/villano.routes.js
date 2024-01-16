@@ -17,7 +17,7 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-router.post('/',[isAuthenticated], [upload.single('picture'), uploadToCloudinary], async (req, res, next) => {
+router.post('/', [upload.single('picture'), uploadToCloudinary], async (req, res, next) => {
     try {
         const villanoPicture = req.file_url ? req.file_url : null; //req.file.path
         console.log(req.body)
@@ -37,7 +37,7 @@ router.post('/',[isAuthenticated], [upload.single('picture'), uploadToCloudinary
     }
 })
 
-router.delete('/:id', [isAuthenticated], async(req, res, next) => {
+router.delete('/:id', async(req, res, next) => {
     try {
         const id = req.params.id;
         const deletedVillano = await Villano.findByIdAndDelete(id);
@@ -55,7 +55,7 @@ router.delete('/:id', [isAuthenticated], async(req, res, next) => {
     }
 })
 
-router.put('/:id', [isAuthenticated], async(req, res, next) => {
+router.put('/:id', async(req, res, next) => {
     try {
         const id = req.params.id;
         const villanoModify = new Villano(req.body);

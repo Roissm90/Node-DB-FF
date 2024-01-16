@@ -17,7 +17,7 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-router.post('/',[isAuthenticated], [upload.single('picture'), uploadToCloudinary], async (req, res, next) => {
+router.post('/', [upload.single('picture'), uploadToCloudinary], async (req, res, next) => {
     try {
         const monstruoPicture = req.file_url ? req.file_url : null; //req.file.path
         console.log(req.body)
@@ -38,7 +38,7 @@ router.post('/',[isAuthenticated], [upload.single('picture'), uploadToCloudinary
     }
 })
 
-router.put('/agregar-magias', [isAuthenticated], async (req, res, next) => {
+router.put('/agregar-magias', async (req, res, next) => {
     try {
         const monstruoId = req.body.monstruoId; 
         const debilidadId = req.body.debilidadId;
@@ -55,7 +55,7 @@ router.put('/agregar-magias', [isAuthenticated], async (req, res, next) => {
     }
 });
 
-router.delete('/:id', [isAuthenticated], async(req, res, next) => {
+router.delete('/:id', async(req, res, next) => {
     try {
         const id = req.params.id;
         const deletedMonstruo = await Monstruo.findByIdAndDelete(id);
@@ -73,7 +73,7 @@ router.delete('/:id', [isAuthenticated], async(req, res, next) => {
     }
 })
 
-router.put('/:id', [isAuthenticated], async(req, res, next) => {
+router.put('/:id', async(req, res, next) => {
     try {
         const id = req.params.id;
         const monstruoToModify = new Monstruo(req.body);

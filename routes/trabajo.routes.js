@@ -16,7 +16,7 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-router.post('/',[isAuthenticated], [upload.single('picture'), uploadToCloudinary], async (req, res, next) => {
+router.post('/', [upload.single('picture'), uploadToCloudinary], async (req, res, next) => {
     try {
         console.log(req.body)
         const newTrabajo = new Trabajo({
@@ -35,7 +35,7 @@ router.post('/',[isAuthenticated], [upload.single('picture'), uploadToCloudinary
     }
 })
 
-router.put('/agregar-personajes-job-array', [isAuthenticated], async (req, res, next) => {
+router.put('/agregar-personajes-job-array', async (req, res, next) => {
     try {
         const trabajoId = req.body.trabajoId; 
         const personajesIdArray = req.body.personajesIdArray;

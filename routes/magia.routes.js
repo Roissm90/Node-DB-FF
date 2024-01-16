@@ -17,7 +17,7 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-router.post('/',[isAuthenticated], [upload.single('picture'), uploadToCloudinary], async (req, res, next) => {
+router.post('/', [upload.single('picture'), uploadToCloudinary], async (req, res, next) => {
     try {
         const newMagic = new Magia({
             name: req.body.name,
@@ -35,7 +35,7 @@ router.post('/',[isAuthenticated], [upload.single('picture'), uploadToCloudinary
     }
 })
 
-router.delete('/:id', [isAuthenticated], async(req, res, next) => {
+router.delete('/:id', async(req, res, next) => {
     try {
         const id = req.params.id;
         const deletedMagic = await Magia.findByIdAndDelete(id);
@@ -53,7 +53,7 @@ router.delete('/:id', [isAuthenticated], async(req, res, next) => {
     }
 })
 
-router.put('/:id', [isAuthenticated], async(req, res, next) => {
+router.put('/:id', async(req, res, next) => {
     try {
         const id = req.params.id;
         const magicToModify = new Magia(req.body);

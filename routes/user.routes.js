@@ -1,18 +1,10 @@
 const express = require('express');
-const passport = require('passport');
 const router = express.Router();
+const bcrypt = require('bcrypt');
+const { validateEmail, validatePassword, usedEmail } = require('../utils/validation'); 
+const { generateSign } = require('../utils/jwt');
 const User = require('../models/User');
-const cors = require('cors');
 
-// Configuración CORS
-const corsOptions = {
-    origin: '*', // Especifica el origen permitido
-    credentials: true // Habilita las credenciales (si es necesario)
-};
-
-router.use(cors(corsOptions));
-
-// Ruta para obtener todos los usuarios
 router.get('/', async (req, res, next) => {
     try {
         const users = await User.find();
@@ -22,65 +14,55 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-// Ruta para registro de usuarios
-router.post('/register', async (req, res, next) => {
+router.post('/login', async (req, res, next) => {
     try {
-        const { email, password } = req.body;
-
-        // Verifica si el usuario ya existe
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: 'El usuario ya existe.' });
+        const user = await User.findOne({ email: req.body.email });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
         }
 
-        // Crea un nuevo usuario
-        const newUser = new User({ email, password });
-        await newUser.save();
+        if (!bcrypt.compareSync(req.body.password, user.password)) {
+            return res.status(401).json({ message: 'Invalid password' });
+        }
 
-        // Autenticación del nuevo usuario
-        req.login(newUser, (err) => {
-            if (err) {
-                return next(err);
-            }
-            return res.status(201).json(newUser);
-        });
-    } catch (err) {
-        next(err);
+        const token = generateSign(user._id, user.email);
+        return res.status(200).json({ user, token });
+    } catch (error) {
+        console.error(error);
+        next(error);
     }
 });
 
-// Ruta para iniciar sesión
-router.post('/login', (req, res, next) => {
-    const done = (error, user) => {
-        if (error) {
-            return next(error);
-        } else {
-            req.login(user, (error) => {
-                if (error) {
-                    return next(error);
-                } else {
-                    return res.status(200).json(user);
-                }
-            });
+router.post('/register', async (req, res, next) => {
+    try {
+        const newUser = new User(req.body);
+
+        if (!validateEmail(newUser.email)) {
+            return res.status(400).json({ message: 'Invalid email' });
         }
-    };
-    passport.authenticate('login', done)(req, res, next);
+
+        if (!validatePassword(newUser.password)) {
+            return res.status(400).json({ message: 'Invalid password' });
+        }
+
+        if (await usedEmail(newUser.email) > 0) {
+            return res.status(400).json({ message: 'Email already in use' });
+        }
+
+        newUser.password = bcrypt.hashSync(newUser.password, 10);
+        const createdUser = await newUser.save();
+        return res.status(201).json(createdUser);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
 });
 
-// Ruta para cerrar sesión
-router.post('/logout', (req, res, next) => {
-    if (req.user) {
-        req.logout(err => {
-            if (err) {
-                return next(err);
-            }
-            req.session.destroy(() => {
-                res.clearCookie('connect.sid');
-                return res.status(200).json('Adiós');
-            });
-        });
-    } else {
-        return res.sendStatus(304);
+router.get('/checkSession', async (req, res, next) => {
+    try {
+        return res.status(200).json(req.user);
+    } catch (error) {
+        next(error);
     }
 });
 
