@@ -6,9 +6,6 @@
       "use": "@vercel/node"
     }
   ],
-  "logs": {
-    "tail": true
-  },
   "routes": [
     {
       "src": "/usersFF/(.*)",
