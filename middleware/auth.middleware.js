@@ -22,6 +22,7 @@ const isAuth = async (req, res, next) => {
 
         const userLogged = await User.findById(tokenVerified.id);
         req.user = userLogged;
+        console.log(userLogged);
         //obj = {name: "pepe", apellido: "perez"}; obj.edad = 20; --> {name: "pepe", apellido: "perez", edad: 20};
 
         next();

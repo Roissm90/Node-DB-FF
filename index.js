@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const session = require('express-session');
 const server = express();
-const PORT = 3000;
+const PORT = 5001;
 
 const personajeRoutes = require('./routes/personaje.routes');
 const videojuegoRoutes = require('./routes/videojuego.routes');
@@ -49,14 +49,14 @@ server.use(passport.initialize());
 server.use(passport.session());
 
 //https://node-db-ff.vercel.app     *ruta inicial*
-server.use('/personajesFF', personajeRoutes);
-server.use('/videojuegosFF', videojuegoRoutes);
-server.use('/villanosFF', villanoRoutes);
-server.use('/invocacionesFF', invocacionRoutes);
-server.use('/magiasFF', magiaRoutes);
-server.use('/trabajosFF', trabajoRoutes);
-server.use('/monstruosFF', monstruoRoutes);
-server.use('/usersFF', userRoutes);
+server.use('/personajesff', personajeRoutes);
+server.use('/videojuegosff', videojuegoRoutes);
+server.use('/villanosff', villanoRoutes);
+server.use('/invocacionesff', invocacionRoutes);
+server.use('/magiasff', magiaRoutes);
+server.use('/trabajosff', trabajoRoutes);
+server.use('/monstruosff', monstruoRoutes);
+server.use('/usersff', userRoutes);
 
 server.use((err, req, res, next) => {
     return res.status(err.status || 500).json(err.message || 'Error inesperado');
